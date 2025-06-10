@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autores</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f0f6ff;
+      }
+
+      .sidebar {
+        height: 100vh;
+        background-color: #8b4513; /* marrón */
+        color: white;
+        padding: 2rem 1rem;
+        position: fixed;
+        width: 250px;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        z-index: 1030;
+      }
+
+      .sidebar h4 {
+        margin-bottom: 2rem;
+      }
+
+      .sidebar a {
+        display: block;
+        padding: 0.6rem 1rem;
+        color: #ffffffcc;
+        margin-bottom: 0.5rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: #5c2c06; /* marrón oscuro para hover */
+        color: #fff;
+      }
+
+      .main-content {
+        margin-left: 270px;
+        padding: 2rem 0.5rem 2rem 2rem;
+      }
+
+      .book-table thead {
+        background-color: #8b4513; /* marrón */
+        color: white;
+      }
+
+      .book-table tbody tr:hover {
+        background-color: #f5e6d6; /* tono claro marrón */
+      }
+
+      .book-table .badge {
+        font-size: 0.9rem;
+        padding: 0.5em 0.75em;
+        background-color: #8b4513; /* marrón */
+      }
+
+      .book-table td strong {
+        color: #8b4513; /* marrón */
+      }
+
+      .book-table .btn-outline-success {
+        border-color: #198754;
+        color: #198754;
+      }
+
+      .book-table .btn-outline-success:hover {
+        background-color: #198754;
+        color: white;
+      }
+
+      .book-table .btn-outline-danger {
+        border-color: #dc3545;
+        color: #dc3545;
+      }
+
+      .book-table .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <h4><i class="bi bi-speedometer2 me-2"></i>Dashboard</h4>
+      <a href="/books/dashboard"
+        ><i class="bi bi-book me-2"></i>Panel De Control</a
+      >
+      <a href="/books/libro"><i class="bi bi-book-half me-2"></i>Libros</a>
+      <a href="/books/autores" class="active"
+        ><i class="bi bi-people me-2"></i>Autores</a
+      >
+      <a href="/books/editoriales"
+        ><i class="bi bi-bar-chart-line me-2"></i>Editoriales</a
+      >
+      <a href="/books/categorias"><i class="bi bi-tags me-2"></i>Categorías</a>
+      <a href="/books/prestamos"
+        ><i class="bi bi-journal-text me-2"></i>Prestamos</a
+      >
+    </div>
+
+    <div class="main-content">
+      <div class="container py-5">
+        <div id="alertas"></div>
+        <div class="card shadow-lg border-0">
+          <div
+            class="card-header bg-light text-dark d-flex justify-content-between align-items-center"
+          >
+            <h5 class="mb-0">
+              <i class="bi bi-people me-2"></i>Lista de Autores
+            </h5>
+            <button class="btn btn-outline-primary btn-sm" id="btnAgregarAutor">
+              <i class="bi bi-plus-circle me-1"></i> Agregar autor
+            </button>
+          </div>
+          <div class="card-body px-4 py-4">
+            <% if (autores.length) { %>
+            <div class="table-responsive">
+              <table
+                class="table table-bordered table-hover align-middle book-table"
+                id="tablaAutores"
+              >
+                <thead class="text-center">
+                  <tr>
+                    <th>#</th>
+                    <th>🧑 Nombre</th>
+                    <th>🔵 Estado</th>
+                    <th>🎯 Acción</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  <% autores.forEach(function(autor, i) { %>
+                  <tr data-id="<%= autor.id %>">
+                    <td>
+                      <span class="badge bg-secondary"><%= i + 1 %></span>
+                    </td>
+                    <td class="text-start">
+                      <i class="bi bi-person-lines-fill me-1 text-primary"></i>
+                      <strong><%= autor.nombre %></strong>
+                    </td>
+                    <td>
+                      <span
+                        class="badge <%= autor.estado === 'Activo' ? 'bg-success' : 'bg-danger' %>"
+                      >
+                        <%= autor.estado %>
+                      </span>
+                      <button
+                        class="btn btn-sm btn-outline-secondary ms-2 btnToggleEstadoAutor"
+                        data-id="<%= autor.id %>"
+                        data-estado="<%= autor.estado %>"
+                      >
+                        <i class="bi bi-arrow-repeat"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <div class="d-flex justify-content-center gap-2">
+                        <button
+                          class="btn btn-outline-success btn-sm btnEditarAutor"
+                          data-id="<%= autor.id %>"
+                          data-nombre="<%= autor.nombre %>"
+                        >
+                          <i class="bi bi-pencil-fill"></i> Editar
+                        </button>
+                        <a
+                          class="btn btn-outline-danger btn-sm"
+                          onclick="return confirm('¿Estás segura/o?')"
+                          href="/books/autores/delete/<%= autor.id %>"
+                        >
+                          <i class="bi bi-trash-fill"></i> Eliminar
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+            <div class="text-center text-muted py-4">
+              <i class="bi bi-emoji-frown fs-1 d-block mb-2"></i>
+              <p class="mb-0">¡No se encontraron autores!</p>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Agregar/Editar Autor -->
+    <div
+      class="modal fade"
+      id="modalAutor"
+      tabindex="-1"
+      aria-labelledby="modalAutorLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <form class="modal-content" id="formAutor">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAutorLabel">Agregar Autor</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="autorId" name="id" />
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre del autor</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nombre"
+                name="nombre"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="btnGuardarAutor">
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Mostrar modal para agregar autor
+      document
+        .getElementById("btnAgregarAutor")
+        .addEventListener("click", function () {
+          document.getElementById("modalAutorLabel").innerText =
+            "Agregar Autor";
+          document.getElementById("formAutor").reset();
+          document.getElementById("autorId").value = "";
+          var modal = new bootstrap.Modal(
+            document.getElementById("modalAutor")
+          );
+          modal.show();
+        });
+
+      // Mostrar modal para editar autor
+      document.querySelectorAll(".btnEditarAutor").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.getElementById("modalAutorLabel").innerText = "Editar Autor";
+          document.getElementById("autorId").value =
+            btn.getAttribute("data-id");
+          document.getElementById("nombre").value =
+            btn.getAttribute("data-nombre");
+          var modal = new bootstrap.Modal(
+            document.getElementById("modalAutor")
+          );
+          modal.show();
+        });
+      });
+
+      // Cambiar estado de autor (Activo/Inactivo)
+      document
+        .querySelectorAll(".btnToggleEstadoAutor")
+        .forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const id = btn.getAttribute("data-id");
+            const estadoActual = btn.getAttribute("data-estado");
+            const nuevoEstado =
+              estadoActual === "Activo" ? "Inactivo" : "Activo";
+            fetch(`/books/autores/estado/${id}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ estado: nuevoEstado }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.success) {
+                  location.reload();
+                } else {
+                  mostrarAlerta(data.message || "Error", "danger");
+                }
+              })
+              .catch(() => mostrarAlerta("Error en la petición", "danger"));
+          });
+        });
+
+      // Enviar formulario por AJAX
+      document
+        .getElementById("formAutor")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const id = document.getElementById("autorId").value;
+          const nombre = document.getElementById("nombre").value;
+          const url = id ? `/books/autores/edit/${id}` : "/books/autores/add";
+          fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) {
+                location.reload();
+              } else {
+                mostrarAlerta(data.message || "Error", "danger");
+              }
+            })
+            .catch(() => mostrarAlerta("Error en la petición", "danger"));
+        });
+
+      function mostrarAlerta(msg, tipo) {
+        document.getElementById(
+          "alertas"
+        ).innerHTML = `<div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+        ${msg}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>`;
+      }
+    </script>
+  </body>
+</html>

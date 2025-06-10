@@ -1,0 +1,19 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url('/images/library-background.jpg'); /* Cambia esta ruta por la tuya */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  color: #333; /* Asegura que el texto sea legible */
+}
+
+a {
+  color: #00B7FF;
+}
+
+.carousel-inner img {
+  height: 300px; /* o el alto que prefieras */
+  object-fit: cover;
+}

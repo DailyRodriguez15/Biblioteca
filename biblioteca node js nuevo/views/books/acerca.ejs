@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acerca de Mi Biblioteca Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --library-brown: #52331a;
+        --library-brown-dark: #332012;
+        --library-white: #ffffff;
+        --library-brown-light: #e3d3c2;
+      }
+
+      body {
+        background: var(--library-white);
+        font-family: "Segoe UI", "Georgia", serif;
+        color: var(--library-brown-dark);
+        padding-top: 70px;
+      }
+
+      .navbar-glass {
+        backdrop-filter: blur(10px);
+        background-color: var(--library-brown) !important;
+        border-bottom: 1.5px solid var(--library-brown-light);
+      }
+
+      .navbar-glass .navbar-brand,
+      .navbar-glass .nav-link,
+      .navbar-glass .navbar-toggler-icon {
+        color: #fff !important;
+      }
+
+      .navbar-glass .nav-link.active,
+      .navbar-glass .nav-link:focus,
+      .navbar-glass .nav-link:hover {
+        color: var(--library-brown) !important;
+        background: var(--library-white);
+        border-radius: 7px;
+        font-weight: 600;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-welcome {
+        background-color: var(--library-brown-light);
+        border: 1px solid var(--library-brown);
+        color: var(--library-brown-dark);
+        font-weight: 600;
+        padding: 0.45rem 1rem;
+        border-radius: 6px;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .btn-welcome:hover {
+        background-color: var(--library-brown);
+        color: #fff;
+      }
+
+      .content-section {
+        max-width: 850px;
+        margin: 3rem auto 5rem auto;
+        background: var(--library-brown-light);
+        border-radius: 18px;
+        padding: 3rem 2rem;
+        box-shadow: 0 8px 32px rgba(82, 51, 26, 0.1);
+        border: 2px solid var(--library-brown);
+        text-align: center;
+      }
+
+      .content-section h1 {
+        font-weight: 700;
+        font-size: 2.5rem;
+        color: var(--library-brown);
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+      }
+
+      .content-section h3 {
+        font-weight: 700;
+        color: var(--library-brown-dark);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .content-section ul {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        text-align: left;
+        margin-bottom: 2rem;
+      }
+
+      .content-section ul li {
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .content-section p {
+        font-size: 1.18rem;
+        color: var(--library-brown-dark);
+        line-height: 1.6;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      footer {
+        background-color: var(--library-brown-dark);
+        color: #fff;
+        padding: 2rem 0 1.3rem 0;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        box-shadow: inset 0 3px 10px rgba(245, 239, 230, 0.08);
+        letter-spacing: 0.2px;
+        border-top: 2px solid var(--library-brown-light);
+      }
+
+      footer a {
+        color: var(--library-brown-light);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      footer a:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark navbar-glass fixed-top shadow-sm"
+    >
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <i class="bi bi-book-half fs-4 me-2"></i> Mi Biblioteca Virtual
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#menuNavbar"
+          aria-controls="menuNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="bi bi-house-door-fill me-1"></i>Inicio
+              </a>
+            </li>
+            <li class="nav-item ms-3">
+              <a class="nav-link active" href="/acerca">
+                <i class="bi bi-info-circle-fill me-1"></i>Acerca
+              </a>
+            </li>
+          </ul>
+          <div class="d-flex justify-content-end">
+            <a href="/books/login" class="btn btn-welcome">
+              <i class="bi bi-journal-richtext me-1"></i> Iniciar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="content-section">
+      <h1>Acerca de Mi Biblioteca</h1>
+      <p>
+        <strong>Mi Biblioteca Virtual</strong> es un entorno digital donde la
+        pasión por los libros cobra vida. Creado para lectores, por lectores,
+        este espacio permite organizar, explorar y compartir tus lecturas
+        favoritas con una comunidad vibrante y curiosa.
+      </p>
+      <h3>¿Qué puedes hacer aquí?</h3>
+      <ul>
+        <li>Crear y administrar tu propia colección de libros.</li>
+        <li>Descubrir títulos destacados y recomendaciones personalizadas.</li>
+        <li>Acceder desde cualquier lugar y en cualquier momento.</li>
+        <li>Formar parte de una red de lectores con intereses similares.</li>
+      </ul>
+      <p>
+        Nuestra misión es fomentar el hábito lector y facilitar el acceso a
+        herramientas modernas que mejoren tu experiencia con la lectura. Creemos
+        que cada libro tiene algo que enseñarnos, y queremos ayudarte a
+        descubrirlo.
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2025 Mi Biblioteca Virtual. Todos los derechos reservados.</p>
+      <p>
+        Síguenos en
+        <a href="#"><i class="bi bi-facebook"></i> Facebook</a>,
+        <a href="#"><i class="bi bi-twitter"></i> Twitter</a>
+        y
+        <a href="#"><i class="bi bi-instagram"></i> Instagram</a>
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

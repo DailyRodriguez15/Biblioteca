@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Panel Bibliotecario - Mi Biblioteca Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f5e6d6;
+        font-family: "Segoe UI", sans-serif;
+        color: #5c2c06;
+      }
+
+      .navbar-glass {
+        backdrop-filter: blur(10px);
+        background-color: rgba(92, 44, 6, 0.95) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        z-index: 1040;
+      }
+
+      .navbar-glass .navbar-brand,
+      .navbar-glass .nav-link,
+      .navbar-glass .navbar-toggler-icon {
+        color: #fff !important;
+      }
+
+      .navbar-glass .nav-link.active,
+      .navbar-glass .nav-link:focus,
+      .navbar-glass .nav-link:hover {
+        color: #5c2c06 !important;
+        background: #f5e6d6;
+        border-radius: 6px;
+      }
+
+      .main-content {
+        max-width: 1200px;
+        margin: 90px auto 0 auto;
+        padding: 2rem;
+      }
+
+      .card-highlight {
+        background: linear-gradient(120deg, #5c2c06 60%, #8b4513 100%);
+        color: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 8px rgba(92, 44, 6, 0.2);
+      }
+
+      .book-card,
+      .timeline-item,
+      .user-card {
+        border-radius: 1rem;
+        box-shadow: 0 2px 8px rgba(92, 44, 6, 0.1);
+        border: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .book-card:hover,
+      .user-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 4px 24px rgba(92, 44, 6, 0.3);
+      }
+
+      .btn-action {
+        background: linear-gradient(90deg, #5c2c06 60%, #8b4513 100%);
+        color: #fff;
+        border: none;
+        border-radius: 2rem;
+        padding: 0.4rem 1.3rem;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-top: 0.4rem;
+        transition: background 0.3s;
+      }
+
+      .btn-action:hover,
+      .btn-return:hover {
+        background: linear-gradient(90deg, #8b4513 60%, #5c2c06 100%);
+        color: #fff;
+      }
+
+      .btn-return {
+        background: #5c2c06;
+        color: #fff;
+        border: none;
+        border-radius: 2rem;
+        padding: 0.4rem 1.3rem;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-top: 0.4rem;
+        transition: background 0.3s;
+      }
+
+      .category-badge {
+        background: #f5e6d6;
+        color: #5c2c06;
+        font-size: 0.95rem;
+        border-radius: 1rem;
+        padding: 0.2em 0.8em;
+        margin-right: 0.5em;
+      }
+
+      .timeline-item {
+        background: #fff;
+        border-radius: 0.7rem;
+        padding: 1rem 1.2rem;
+        box-shadow: 0 2px 8px rgba(92, 44, 6, 0.05);
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      .timeline-item:not(:last-child) {
+        border-left: 4px solid #5c2c06;
+        margin-left: 10px;
+      }
+
+      .badge-status {
+        font-size: 0.93rem;
+        border-radius: 1rem;
+        padding: 0.2em 0.9em;
+        margin-right: 0.3em;
+      }
+
+      .info-box {
+        background: #fff7f0;
+        padding: 1rem 1.5rem;
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+        border-left: 5px solid #5c2c06;
+      }
+
+      .user-card {
+        background: #fff;
+        padding: 1.2rem;
+        text-align: center;
+      }
+
+      .section-title {
+        font-weight: 700;
+        color: #5c2c06;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .alert {
+        margin-top: 1rem;
+      }
+
+      .bg-success,
+      .bg-info,
+      .bg-danger,
+      .bg-secondary {
+        color: #fff !important;
+        background-color: #5c2c06 !important;
+      }
+
+      .bg-info {
+        background-color: #8b4513 !important;
+      }
+
+      .bg-danger {
+        background-color: #b8572a !important;
+      }
+
+      .bg-secondary {
+        background-color: #a0522d !important;
+      }
+
+      /* Dropdown menu color fix */
+      .dropdown-menu {
+        background: #fff;
+        color: #5c2c06;
+        border-radius: 1rem;
+        box-shadow: 0 2px 8px rgba(92, 44, 6, 0.09);
+      }
+
+      .dropdown-item,
+      .dropdown-item-text {
+        color: #5c2c06;
+      }
+
+      .dropdown-item:hover {
+        background: #f5e6d6;
+        color: #5c2c06;
+      }
+
+      .text-danger {
+        color: #b8572a !important;
+      }
+
+      .alert-warning {
+        background: #f5e6d6;
+        color: #5c2c06;
+        border: none;
+      }
+
+      .alert-success {
+        background: #8b4513;
+        color: #fff;
+        border: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Menú superior -->
+    <nav
+      class="navbar navbar-expand-lg navbar-dark navbar-glass fixed-top shadow-sm"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <i class="bi bi-book-half fs-4 me-2"></i> Mi Biblioteca
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#menuNavbar"
+          aria-controls="menuNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menuNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="/books/bibliotecario"
+                ><i class="bi bi-house-door-fill me-1"></i>Inicio</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="bi bi-info-circle-fill me-1"></i>Acerca</a
+              >
+            </li>
+          </ul>
+          <div class="dropdown">
+            <a
+              href="#"
+              class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+              id="dropdownUser"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-person-circle fs-3 me-2"></i>
+              <span>
+                <%= user && user.username ? user.username : 'Bibliotecario/a' %>
+              </span>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="dropdownUser"
+            >
+              <li>
+                <div class="dropdown-item-text text-center">
+                  <i class="bi bi-person-circle fs-1 mb-2"></i>
+                  <div class="fw-bold"><%= user.username %></div>
+                  <div class="text-muted small"><%= user.email %></div>
+                </div>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="/bibliotecario/perfil"
+                  ><i class="bi bi-person-circle me-2"></i>Ver Perfil</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="/bibliotecario/configuracion"
+                  ><i class="bi bi-gear me-2"></i>Configuración</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="/books"
+                  ><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <div class="info-box mb-4">
+        <h2 class="mb-0">
+          Bienvenido/a, <%= user.username %> (Bibliotecario/a)
+        </h2>
+        <p class="mb-1">
+          Gestiona los préstamos, devoluciones, reservas y usuarios. Controla
+          todo el flujo diario de la biblioteca desde este panel.
+        </p>
+      </div>
+
+      <!-- Totales -->
+      <div class="row justify-content-center">
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm card-highlight mb-4">
+            <div class="card-body text-center">
+              <h5 class="card-title">📚 Libros Disponibles</h5>
+              <p class="card-text fs-4"><%= totalLibros %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm card-highlight mb-4">
+            <div class="card-body text-center">
+              <h5 class="card-title">🔄 Préstamos Activos</h5>
+              <p class="card-text fs-4"><%= totalPrestamos %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm card-highlight mb-4">
+            <div class="card-body text-center">
+              <h5 class="card-title">⏳ Reservas Pendientes</h5>
+              <p class="card-text fs-4"><%= totalReservas %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm card-highlight mb-4">
+            <div class="card-body text-center">
+              <h5 class="card-title">💸 Multas Pendientes</h5>
+              <p class="card-text fs-4"><%= totalMultas %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Libros disponibles -->
+      <div>
+        <h4 class="section-title">
+          <i class="bi bi-book me-2"></i>Libros Disponibles
+        </h4>
+        <div class="row g-4">
+          <% if (libros && libros.length> 0) { %> <%
+          libros.forEach(function(libro) { %>
+          <div class="col-md-4 col-lg-3">
+            <div class="card book-card h-100">
+              <div class="card-body text-center">
+                <h6 class="fw-bold"><%= libro.name %></h6>
+                <div class="text-muted small mb-1">
+                  Autor: <%= libro.autor %><br />
+                  Editorial: <%= libro.editorial %>
+                </div>
+                <div>
+                  <span class="category-badge"
+                    ><i class="bi bi-tags"></i>
+                    <%= libro.categoria %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }); %> <% } else { %>
+          <div class="col-12">
+            <div class="alert alert-warning text-center">
+              No hay libros disponibles en este momento.
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Libros prestados -->
+      <div>
+        <h4 class="section-title">
+          <i class="bi bi-journal-text me-2"></i>Libros Prestados
+        </h4>
+        <div class="row g-4">
+          <% if (prestamos && prestamos.length> 0) { %> <%
+          prestamos.forEach(function(prestamo) { %>
+          <div class="col-md-4 col-lg-3">
+            <div class="card book-card h-100">
+              <div class="card-body text-center">
+                <h6 class="fw-bold"><%= prestamo.libro_nombre %></h6>
+                <div class="text-muted small mb-1">
+                  Usuario: <%= prestamo.usuario_nombre %><br />
+                  Fecha préstamo: <%= prestamo.fecha_prestamo ?
+                  (prestamo.fecha_prestamo.toISOString ?
+                  prestamo.fecha_prestamo.toISOString().slice(0,10) : new
+                  Date(prestamo.fecha_prestamo).toISOString().slice(0,10)) : '-'
+                  %>
+                  <br />
+                  Fecha devolución: <%= prestamo.fecha_devolucion ?
+                  (prestamo.fecha_devolucion.toISOString ?
+                  prestamo.fecha_devolucion.toISOString().slice(0,10) : new
+                  Date(prestamo.fecha_devolucion).toISOString().slice(0,10)) :
+                  '-' %>
+                </div>
+                <span class="badge badge-status bg-success">
+                  <i class="bi bi-circle-fill me-1"></i>
+                  <%= prestamo.estado %>
+                </span>
+                <% if (prestamo.estado==='Activo' ) { %>
+                <form
+                  action="/books/bibliotecario/prestamos/devolver"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <input
+                    type="hidden"
+                    name="prestamo_id"
+                    value="<%= prestamo.id %>"
+                  />
+                  <button type="submit" class="btn btn-return btn-sm mt-2">
+                    Registrar devolución
+                  </button>
+                </form>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <% }); %> <% } else { %>
+          <div class="col-12">
+            <div class="alert alert-warning text-center">
+              No hay libros prestados actualmente.
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Reservas recientes -->
+      <div>
+        <h4 class="section-title">
+          <i class="bi bi-bookmark-check me-2"></i>Reservas Pendientes
+        </h4>
+        <div class="row g-3">
+          <% if (reservas && reservas.length> 0) { %> <%
+          reservas.forEach(function(reserva) { %>
+          <div class="col-md-6 col-lg-4">
+            <div class="card book-card h-100">
+              <div class="card-body text-center">
+                <h6 class="fw-bold mb-1">
+                  <i class="bi bi-bookmarks me-1"></i>
+                  <%= reserva.libro_nombre %>
+                </h6>
+                <div class="text-muted small mb-2">
+                  Usuario: <%= reserva.usuario_nombre %> <br />
+                  Fecha reserva: <%= reserva.fecha_reserva ?
+                  (reserva.fecha_reserva.toISOString ?
+                  reserva.fecha_reserva.toISOString().slice(0,10) : new
+                  Date(reserva.fecha_reserva).toISOString().slice(0,10)) : '-'
+                  %>
+                  <br />
+                </div>
+                <span class="badge badge-status bg-info"
+                  ><i class="bi bi-stopwatch me-1"></i> Pendiente</span
+                >
+                <form
+                  action="/books/bibliotecario/reservas/entregar"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <input
+                    type="hidden"
+                    name="reserva_id"
+                    value="<%= reserva.id %>"
+                  />
+                  <button type="submit" class="btn btn-action btn-sm">
+                    Liberar/Entregar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <% }) %> <% } else { %>
+          <div class="col-12">
+            <div class="alert alert-warning text-center">
+              No hay reservas pendientes actualmente.
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Multas pendientes -->
+      <div>
+        <h4 class="section-title">
+          <i class="bi bi-cash-coin me-2"></i>Multas Pendientes
+        </h4>
+        <div class="row g-3">
+          <% if (multas && multas.length> 0) { %> <%
+          multas.forEach(function(multa) { %>
+          <div class="col-md-6 col-lg-4">
+            <div class="timeline-item">
+              <div>
+                <strong>Usuario:</strong>
+                <%= multa.usuario_nombre %><br />
+                <strong>Libro:</strong>
+                <%= multa.libro_nombre %><br />
+                <span class="badge bg-danger"
+                  ><i class="bi bi-exclamation-triangle me-1"></i> $<%=
+                  multa.monto %>
+                </span>
+                <span class="badge bg-secondary"><%= multa.estado %></span>
+              </div>
+              <div class="mt-2">
+                <% if (multa.estado==='Pendiente' ) { %>
+                <form
+                  action="/bibliotecario/multas/pagar"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <input
+                    type="hidden"
+                    name="multa_id"
+                    value="<%= multa.id %>"
+                  />
+                  <button type="submit" class="btn btn-action btn-sm">
+                    Registrar pago
+                  </button>
+                </form>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <% }) %> <% } else { %>
+          <div class="col-12">
+            <div class="alert alert-success text-center">
+              No hay multas pendientes.
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Reportes rápidos -->
+      <div>
+        <h4 class="section-title">
+          <i class="bi bi-bar-chart-line me-2"></i>Reportes Rápidos
+        </h4>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="timeline-item">
+              <div>
+                <i class="bi bi-book me-2"></i
+                ><strong>Libros más prestados:</strong>
+              </div>
+              <ul class="mb-0">
+                <% if (reportes && reportes.masPrestados &&
+                reportes.masPrestados.length> 0) { %> <%
+                reportes.masPrestados.forEach(function(libro) { %>
+                <li><%= libro.nombre %> (<%= libro.cantidad %> veces)</li>
+                <% }); %> <% } else { %>
+                <li>No hay datos.</li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="timeline-item">
+              <div>
+                <i class="bi bi-person me-2"></i
+                ><strong>Usuarios activos:</strong>
+              </div>
+              <ul class="mb-0">
+                <% if (reportes && reportes.usuariosActivos &&
+                reportes.usuariosActivos.length> 0) { %> <%
+                reportes.usuariosActivos.forEach(function(usuario) { %>
+                <li>
+                  <%= usuario.nombre %> (<%= usuario.prestamos %> préstamos)
+                </li>
+                <% }); %> <% } else { %>
+                <li>No hay datos.</li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="timeline-item">
+              <div>
+                <i class="bi bi-cash-coin me-2"></i
+                ><strong>Multas recientes:</strong>
+              </div>
+              <ul class="mb-0">
+                <% if (reportes && reportes.multasRecientes &&
+                reportes.multasRecientes.length> 0) { %> <%
+                reportes.multasRecientes.forEach(function(multa) { %>
+                <li><%= multa.usuario_nombre %>: $<%= multa.monto %></li>
+                <% }); %> <% } else { %>
+                <li>No hay datos.</li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

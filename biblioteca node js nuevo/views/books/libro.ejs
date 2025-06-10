@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Libros - Mi Biblioteca Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f0f6ff;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .sidebar {
+        height: 100vh;
+        background-color: #8b4513; /* marrón */
+        color: white;
+        padding: 2rem 1rem;
+        position: fixed;
+        width: 250px;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        z-index: 1030;
+      }
+
+      .sidebar h4 {
+        margin-bottom: 2rem;
+      }
+
+      .sidebar a {
+        display: block;
+        padding: 0.6rem 1rem;
+        color: #ffffffcc;
+        margin-bottom: 0.5rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: #5c2c06; /* marrón oscuro para hover */
+        color: #fff;
+      }
+
+      .main-content {
+        margin-left: 270px;
+        padding: 2rem 0.5rem 2rem 2rem;
+      }
+
+      .book-table thead {
+        background-color: #8b4513; /* marrón */
+        color: white;
+      }
+
+      .book-table tbody tr:hover {
+        background-color: #f5e6d6; /* tono claro marrón */
+      }
+
+      .book-table .badge {
+        font-size: 0.9rem;
+        padding: 0.5em 0.75em;
+        background-color: #8b4513; /* marrón */
+      }
+
+      .book-table td strong {
+        color: #8b4513; /* marrón */
+      }
+
+      .book-table .btn-outline-success {
+        border-color: #198754;
+        color: #198754;
+      }
+
+      .book-table .btn-outline-success:hover {
+        background-color: #198754;
+        color: white;
+      }
+
+      .book-table .btn-outline-danger {
+        border-color: #dc3545;
+        color: #dc3545;
+      }
+
+      .book-table .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <h4><i class="bi bi-speedometer2 me-2"></i>Dashboard</h4>
+      <a href="/books/dashboard"
+        ><i class="bi bi-book me-2"></i>Panel De Control</a
+      >
+      <a href="/books/libro" class="active"
+        ><i class="bi bi-book-half me-2"></i>Libros</a
+      >
+      <a href="/books/autores"><i class="bi bi-people me-2"></i>Autores</a>
+      <a href="/books/editoriales"
+        ><i class="bi bi-bar-chart-line me-2"></i>Editoriales</a
+      >
+      <a href="/books/categorias"><i class="bi bi-tags me-2"></i>Categorías</a>
+      <a href="/books/prestamos"
+        ><i class="bi bi-journal-text me-2"></i>Prestamos</a
+      >
+    </div>
+
+    <!-- ... El head y sidebar quedan igual ... -->
+
+    <div class="main-content">
+      <div class="container py-5">
+        <div id="alertas"></div>
+        <div class="card shadow-lg border-0">
+          <div
+            class="card-header bg-light text-dark d-flex justify-content-between align-items-center"
+          >
+            <h5 class="mb-0">
+              <i class="bi bi-book-half me-2"></i>Lista de Libros
+            </h5>
+            <button class="btn btn-outline-primary btn-sm" id="btnAgregarLibro">
+              <i class="bi bi-plus-circle me-1"></i> Agregar libro
+            </button>
+          </div>
+          <div class="card-body px-4 py-4">
+            <% if (data && data.length) { %>
+            <div class="table-responsive">
+              <table
+                class="table table-bordered table-hover align-middle book-table"
+                id="tablaLibros"
+              >
+                <thead class="text-center">
+                  <tr>
+                    <th>#</th>
+                    <th>ISBN</th>
+                    <th>📖 Título</th>
+                    <th>👤 Autor</th>
+                    <th>🏢 Editorial</th>
+                    <th>🏷️ Categoría</th>
+                    <th>📅 Año</th>
+                    <th>📄 Páginas</th>
+                    <th>📚 Ejemplares</th>
+                    <th>📦 Estado</th>
+                    <th>🎯 Acción</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  <% data.forEach(function(libro, i) { %>
+                  <tr data-id="<%= libro.id %>">
+                    <td>
+                      <span class="badge bg-secondary"><%= i + 1 %></span>
+                    </td>
+                    <td><%= libro.isbn %></td>
+                    <td class="text-start">
+                      <i class="bi bi-bookmark me-1 text-primary"></i>
+                      <strong><%= libro.name %></strong>
+                    </td>
+                    <td class="text-start">
+                      <i class="bi bi-person-lines-fill me-1 text-primary"></i>
+                      <strong><%= libro.autor %></strong>
+                    </td>
+                    <td><%= libro.editorial %></td>
+                    <td><%= libro.categoria %></td>
+                    <td><%= libro.anio_publicacion %></td>
+                    <td><%= libro.num_paginas %></td>
+                    <td><%= libro.ejemplares %></td>
+                    <td>
+                      <% if (libro.ejemplares === 0) { %>
+                      <span class="badge bg-danger">Sin ejemplares</span>
+                      <% } else if (libro.estado === 'Prestado' ||
+                      libro.prestado) { %>
+                      <span class="badge bg-danger">Prestado</span>
+                      <% } else if (libro.estado === 'Reservado' ||
+                      libro.reservado) { %>
+                      <span class="badge bg-warning text-dark"
+                        >Reservado (No disponible)</span
+                      >
+                      <% } else { %>
+                      <span class="badge bg-success">Disponible</span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <div class="d-flex justify-content-center gap-2">
+                        <button
+                          class="btn btn-outline-success btn-sm btnEditarLibro"
+                          data-id="<%= libro.id %>"
+                          data-isbn="<%= libro.isbn %>"
+                          data-name="<%= libro.name %>"
+                          data-autor_id="<%= libro.autor_id %>"
+                          data-editorial_id="<%= libro.editorial_id %>"
+                          data-categoria_id="<%= libro.categoria_id %>"
+                          data-anio_publicacion="<%= libro.anio_publicacion %>"
+                          data-num_paginas="<%= libro.num_paginas %>"
+                          data-ejemplares="<%= libro.ejemplares %>"
+                          data-estado="<%= libro.estado || (libro.prestado ? 'Prestado' : (libro.reservado ? 'Reservado' : 'Disponible')) %>"
+                        >
+                          <i class="bi bi-pencil-fill"></i> Editar
+                        </button>
+                        <a
+                          href="/books/libro/delete/<%= libro.id %>"
+                          class="btn btn-outline-danger btn-sm"
+                          onclick="return confirm('¿Seguro que deseas eliminar este libro?');"
+                        >
+                          <i class="bi bi-trash-fill"></i> Eliminar
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+            <div class="text-center text-muted py-4">
+              <i class="bi bi-emoji-frown fs-1 d-block mb-2"></i>
+              <p class="mb-0">¡No se encontraron libros!</p>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Agregar/Editar Libro -->
+    <div
+      class="modal fade"
+      id="modalLibro"
+      tabindex="-1"
+      aria-labelledby="modalLibroLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <form class="modal-content" id="formLibro">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLibroLabel">Agregar Libro</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="libroId" name="id" />
+            <div class="mb-3">
+              <label for="isbn" class="form-label">ISBN</label>
+              <input
+                type="text"
+                class="form-control"
+                id="isbn"
+                name="isbn"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Título</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="autor_id" class="form-label">Autor</label>
+              <select
+                class="form-control"
+                id="autor_id"
+                name="autor_id"
+                required
+              >
+                <option value="">Seleccione un autor</option>
+                <% autores.forEach(function(autor) { %>
+                <option value="<%= autor.id %>"><%= autor.nombre %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editorial_id" class="form-label">Editorial</label>
+              <select
+                class="form-control"
+                id="editorial_id"
+                name="editorial_id"
+                required
+              >
+                <option value="">Seleccione una editorial</option>
+                <% editoriales.forEach(function(editorial) { %>
+                <option value="<%= editorial.id %>">
+                  <%= editorial.nombre %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="categoria_id" class="form-label">Categoría</label>
+              <select
+                class="form-control"
+                id="categoria_id"
+                name="categoria_id"
+                required
+              >
+                <option value="">Seleccione una categoría</option>
+                <% categorias.forEach(function(cat) { %>
+                <option value="<%= cat.id %>"><%= cat.nombre %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="anio_publicacion" class="form-label"
+                >Año de Publicación</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="anio_publicacion"
+                name="anio_publicacion"
+                required
+                min="1000"
+                max="9999"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="num_paginas" class="form-label"
+                >Número de Páginas</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="num_paginas"
+                name="num_paginas"
+                required
+                min="1"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="ejemplares" class="form-label">Ejemplares</label>
+              <input
+                type="number"
+                class="form-control"
+                id="ejemplares"
+                name="ejemplares"
+                required
+                min="1"
+                value="1"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="estado" class="form-label">Estado</label>
+              <select class="form-control" id="estado" name="estado" required>
+                <option value="Disponible">Disponible</option>
+                <option value="Prestado">Prestado</option>
+                <option value="Reservado">Reservado</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="btnGuardarLibro">
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Mostrar modal para agregar libro
+      document
+        .getElementById("btnAgregarLibro")
+        .addEventListener("click", function () {
+          document.getElementById("modalLibroLabel").innerText =
+            "Agregar Libro";
+          document.getElementById("formLibro").reset();
+          document.getElementById("libroId").value = "";
+          document.getElementById("estado").value = "Disponible";
+          document.getElementById("ejemplares").value = "1";
+          var modal = new bootstrap.Modal(
+            document.getElementById("modalLibro")
+          );
+          modal.show();
+        });
+
+      // Mostrar modal para editar libro
+      document.querySelectorAll(".btnEditarLibro").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.getElementById("modalLibroLabel").innerText = "Editar Libro";
+          document.getElementById("libroId").value =
+            btn.getAttribute("data-id");
+          document.getElementById("isbn").value =
+            btn.getAttribute("data-isbn") || "";
+          document.getElementById("name").value = btn.getAttribute("data-name");
+          document.getElementById("autor_id").value =
+            btn.getAttribute("data-autor_id");
+          document.getElementById("editorial_id").value =
+            btn.getAttribute("data-editorial_id");
+          document.getElementById("categoria_id").value =
+            btn.getAttribute("data-categoria_id");
+          document.getElementById("anio_publicacion").value =
+            btn.getAttribute("data-anio_publicacion") || "";
+          document.getElementById("num_paginas").value =
+            btn.getAttribute("data-num_paginas") || "";
+          document.getElementById("ejemplares").value =
+            btn.getAttribute("data-ejemplares") || "1";
+          document.getElementById("estado").value =
+            btn.getAttribute("data-estado");
+          var modal = new bootstrap.Modal(
+            document.getElementById("modalLibro")
+          );
+          modal.show();
+        });
+      });
+
+      // Enviar formulario por AJAX para agregar o editar libro
+      document
+        .getElementById("formLibro")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const id = document.getElementById("libroId").value;
+          const isbn = document.getElementById("isbn").value;
+          const name = document.getElementById("name").value;
+          const autor_id = document.getElementById("autor_id").value;
+          const editorial_id = document.getElementById("editorial_id").value;
+          const categoria_id = document.getElementById("categoria_id").value;
+          const anio_publicacion =
+            document.getElementById("anio_publicacion").value;
+          const num_paginas = document.getElementById("num_paginas").value;
+          const ejemplares = document.getElementById("ejemplares").value;
+          const estado = document.getElementById("estado").value;
+          const url = id ? `/books/libro/edit/${id}` : "/books/libro/add";
+          fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              isbn,
+              name,
+              autor_id,
+              editorial_id,
+              categoria_id,
+              anio_publicacion,
+              num_paginas,
+              ejemplares,
+              estado,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) {
+                location.reload();
+              } else {
+                mostrarAlerta(data.message || "Error", "danger");
+              }
+            })
+            .catch(() => mostrarAlerta("Error en la petición", "danger"));
+        });
+
+      function mostrarAlerta(msg, tipo) {
+        document.getElementById(
+          "alertas"
+        ).innerHTML = `<div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+      ${msg}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>`;
+      }
+    </script>
+  </body>
+</html>

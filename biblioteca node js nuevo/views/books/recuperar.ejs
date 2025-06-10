@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recuperar Contraseña - Mi Biblioteca Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #5d432c 0%, #8b6b4a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Georgia", serif;
+        color: #3a2e1a;
+        margin: 0;
+      }
+
+      .recover-container {
+        background: #f7f1e1;
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 40px rgba(92, 68, 37, 0.5);
+        padding: 3rem 2.5rem;
+        max-width: 420px;
+        width: 100%;
+        text-align: center;
+        border: 3px solid #7a5c34;
+      }
+
+      .logo {
+        font-size: 3.5rem;
+        color: #7a5c34;
+        margin-bottom: 1rem;
+      }
+
+      .recover-title {
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.06em;
+        text-shadow: 1px 1px 2px #b29473;
+      }
+
+      .form-control {
+        border-radius: 2rem;
+        padding: 0.85rem 1.5rem;
+        font-size: 1.15rem;
+        border: 2px solid #7a5c34;
+        background: #fff8f0;
+        color: #5d432c;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: #a88244;
+        box-shadow: 0 0 8px rgba(168, 130, 68, 0.6);
+        background: #fff;
+        color: #5d432c;
+        outline: none;
+      }
+
+      .btn-recover {
+        background: linear-gradient(90deg, #7a5c34 40%, #a88244 100%);
+        color: #fff;
+        border: none;
+        border-radius: 2rem;
+        padding: 0.75rem 2.5rem;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-top: 1.5rem;
+        box-shadow: 0 6px 15px rgba(122, 92, 52, 0.7);
+        transition: background 0.3s ease;
+        width: 100%;
+      }
+
+      .btn-recover:hover {
+        background: linear-gradient(90deg, #a88244 40%, #7a5c34 100%);
+        color: #fff;
+      }
+
+      .back-link {
+        display: block;
+        margin-top: 1.8rem;
+        color: #7a5c34;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.25s ease;
+      }
+
+      .back-link:hover {
+        color: #a88244;
+        text-decoration: underline;
+      }
+
+      .alert-danger,
+      .alert-success {
+        border-radius: 1rem;
+        border: none;
+        padding: 0.75rem 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .alert-danger {
+        background: #b94e48;
+        color: #fff;
+        box-shadow: 0 0 8px rgba(185, 78, 72, 0.8);
+      }
+
+      .alert-success {
+        background: #4c8c4a;
+        color: #fff;
+        box-shadow: 0 0 8px rgba(76, 140, 74, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="recover-container">
+      <div class="logo"><i class="bi bi-unlock-keyhole"></i></div>
+      <div class="recover-title">Recuperar Contraseña</div>
+
+      <% if (messages && messages.error) { %>
+      <div class="alert alert-danger"><%= messages.error %></div>
+      <% } %> <% if (messages && messages.success) { %>
+      <div class="alert alert-success"><%= messages.success %></div>
+      <% } %>
+
+      <form action="/books/recuperar" method="post" autocomplete="on">
+        <div class="mb-3">
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            placeholder="Correo electrónico"
+            autocomplete="email"
+            required
+            autofocus
+          />
+        </div>
+        <button type="submit" class="btn btn-recover">
+          <i class="bi bi-envelope-arrow-up me-2"></i> Enviar Enlace
+        </button>
+      </form>
+
+      <a href="/books/login" class="back-link">
+        <i class="bi bi-arrow-left-circle me-1"></i> Volver al inicio de sesión
+      </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

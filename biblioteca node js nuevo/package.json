@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-crud",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-flash": "0.0.2",
+    "express-session": "^1.16.2",
+    "http-errors": "~1.6.3",
+    "method-override": "^3.0.0",
+    "morgan": "~1.9.1",
+    "multer": "^2.0.0",
+    "mysql": "^2.17.1",
+    "mysql2": "^3.14.1"
+  },
+  "description": "Tutorial Link: [Node.js Simple CRUD with Express.js and MySQL](https://shouts.dev/articles/nodejs-simple-crud-with-expressjs-and-mysql)",
+  "main": "app.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
